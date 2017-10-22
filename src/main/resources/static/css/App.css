@@ -1,0 +1,37 @@
+body {
+	color: #31708f;
+}
+.panel {
+	height: 400px;
+}
+.line {
+	height: 50px;
+	border: 1px solid #bce8f1;
+	border-radius: 5px;
+	color: #31708f;
+}
+.time {
+	height: 100%;
+	display:inline-block;
+	width: 17%;
+	border-right: 1px solid #bce8f1;
+	padding: 7px 0;
+}
+.todo {
+	height: 100%;
+	display:inline-block;
+	width: 60%;
+	padding: 7px 0;
+}
+.done {
+	height: 100%;
+	display:inline-block;
+	width: 17%;
+	border-left: 1px solid #bce8f1;
+	padding: 7px 0;
+}
+/*input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+	border-radius: 30px;
+}*/
