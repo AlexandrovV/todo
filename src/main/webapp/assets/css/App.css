@@ -1,0 +1,46 @@
+body {
+	color: #31708f;
+}
+
+.panel {
+	overflow:auto;
+	height: 400px;
+}
+.line {
+	margin: 10px 0;
+}
+.time {
+	padding: 5px;
+	border: 1px solid #bce8f1;
+	border-radius: 15px 15px 0 0;
+}
+.todo {
+	padding: 5px;
+	border: 1px solid #bce8f1;
+	text-align: center;
+}
+.done {
+	padding: 5px;
+	border: 1px solid #bce8f1;
+	border-radius: 0 0 15px 15px;
+}
+.addButton {
+	font-size: 25px; 
+	margin: 20px auto;
+	display: block;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	padding:0;
+}
+.addNoteWrapper {
+	width: 100%;
+}
+.doneLine {
+	color: white;
+	background-color: #5bc0de;
+	border-radius: 15px;
+}
+.panel::-webkit-scrollbar { 
+    display: none; 
+}
