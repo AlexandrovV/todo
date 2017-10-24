@@ -6,13 +6,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -64,20 +62,20 @@ public class PageController {
 	}
 	
 	@RequestMapping(value = "/addNote")
-	public String addNote(@ModelAttribute TodoLine todoLine, HttpServletRequest request){		
+	public String addNote(@ModelAttribute TodoLine todoLine){		
 		todoLineDao.save(todoLine);
 	    return "redirect:/todo";
 	}
 	
-	@RequestMapping(value = "/do")
-	public String doTodo(@RequestParam(name="id") int id){
+	@RequestMapping(value = "/do/{id}")
+	public String doTodo(@PathVariable("id") int id){
 		TodoLine todoLine = todoLineDao.findById(id);
 		todoLine.setDone(true);
 		todoLineDao.save(todoLine);
 	    return "redirect:/todo";
 	}
-	@RequestMapping(value = "/undo")
-	public String undoTodo(@RequestParam(name="id") int id){
+	@RequestMapping(value = "/undo/{id}")
+	public String undoTodo(@PathVariable("id") int id){
 		TodoLine todoLine = todoLineDao.findById(id);
 		todoLine.setDone(false);
 		todoLineDao.save(todoLine);

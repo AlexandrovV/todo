@@ -7,7 +7,6 @@
 <spring:url var="css" value="/assets/css" />
 <spring:url var="js" value="/assets/js" />
 <spring:url var="images" value="/assets/images" />
-<c:set var="contextRoot" value="${pageContext.request.contextPath}" />
 <%
     String[] dow = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     pageContext.setAttribute("dow", dow);
@@ -76,7 +75,7 @@
 										</div>
 		
 										<div class="done text-center">
-											<a href="${(todoLine.done)?("todo/undo?id="):("todo/do?id=")}${todoLine.id}">
+											<a href="/todo/${(todoLine.done)?("undo"):("do")}/${todoLine.id}">
 												<c:choose>
 													<c:when test="${todoLine.done}"><span class="glyphicon glyphicon-ok"></span></c:when>
 													<c:otherwise><span class="glyphicon glyphicon-unchecked"></span></c:otherwise>
@@ -106,7 +105,7 @@
 					</div>
 					<div class="modal-body">
 						<!-- Category Form -->
-						<sf:form id ="todoForm" modelAttribute="todoline" action="${contextRoot}/todo/addNote" method="POST" class="form-horizontal">
+						<sf:form id ="todoForm" modelAttribute="todoline" action="/todo/addNote" method="POST" class="form-horizontal">
 							<div class="form-group">
 								<label for="category_name" class="control-label col-md-4">To do:</label>
 								<div class="col-md-8">
