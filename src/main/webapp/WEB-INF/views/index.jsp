@@ -75,12 +75,13 @@
 										</div>
 		
 										<div class="done text-center">
-											<a href="/todo/${(todoLine.done)?("undo"):("do")}/${todoLine.id}">
+											<a href="/todo/${(todoLine.done)?("undo"):("do")}/${todoLine.id}?link=${requestScope['javax.servlet.forward.request_uri']}">
 												<c:choose>
 													<c:when test="${todoLine.done}"><span class="glyphicon glyphicon-ok"></span></c:when>
 													<c:otherwise><span class="glyphicon glyphicon-unchecked"></span></c:otherwise>
 												</c:choose>
 											</a>
+											<c:if test="${todoLine.done}"><a href="/todo/delete/${todoLine.id}?link=${requestScope['javax.servlet.forward.request_uri']}"><span class="glyphicon glyphicon-remove"></span></a></c:if>
 										</div>
 									</div>
 								</c:forEach>
@@ -119,6 +120,7 @@
 								</div>
 							</div>
 							<sf:input type="hidden" path="date" id="date" name="dateFromForm"/>
+							<input type="hidden" name="link" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 							<div class="form-group">
 								<div class="col-md-offset-4 col-md-8">
 									<input type="submit" value="Add Note" class="btn btn-primary" />

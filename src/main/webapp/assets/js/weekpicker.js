@@ -16,23 +16,9 @@ $(function() {
             var date = $(this).datepicker('getDate');
             startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() +1);
             endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
-            var dateFormat = "dd.mm.yy";
+            var dateFormat = "d.m.yy";
             $('#weekpicker').val($.datepicker.formatDate( dateFormat, startDate, inst.settings )
-                 + ' - ' + $.datepicker.formatDate( dateFormat, endDate, inst.settings ));
-            
-            var tuesday = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() +2);
-            var wednesday = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() +3);
-            var thursday = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() +4);
-            var friday = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() +5);
-            var saturday = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() +6);
-            
-            $('#fullWeek').val($.datepicker.formatDate( dateFormat, startDate, inst.settings )
-            		+ '-' + $.datepicker.formatDate( dateFormat, tuesday, inst.settings ) 
-            		+ '-' + $.datepicker.formatDate( dateFormat, wednesday, inst.settings ) 
-            		+ '-' + $.datepicker.formatDate( dateFormat, thursday, inst.settings ) 
-            		+ '-' + $.datepicker.formatDate( dateFormat, friday, inst.settings ) 
-            		+ '-' + $.datepicker.formatDate( dateFormat, saturday, inst.settings ) 
-                    + '-' + $.datepicker.formatDate( dateFormat, endDate, inst.settings ));
+                 + '-' + $.datepicker.formatDate( dateFormat, endDate, inst.settings ));
             selectCurrentWeek();
         },
         beforeShow: function() {

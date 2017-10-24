@@ -15,5 +15,6 @@ public interface TodoLineDAO extends CrudRepository<TodoLine, Integer>{
 	public List<TodoLine> findAll();
 	public List<TodoLine> findByDate(String date);
 	public TodoLine findById(int id);
+	public void deleteById(int id);
 	
 }
