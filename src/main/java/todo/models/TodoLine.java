@@ -1,21 +1,24 @@
 package todo.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.servlet.http.HttpSession;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name = "todoline")
 public class TodoLine {
+
 	
 	@Id
 	@GeneratedValue
 	int id;
-//	@Column(name = "user_id")
-//	int userId;
+	@Column(name = "user_id")
+	int userId;
 	String date;
 	String todo;
 	String till;
@@ -23,6 +26,7 @@ public class TodoLine {
 	
 	public TodoLine() {
 		till="23:59";
+
 	}
 	
 	public int getId() {
@@ -31,12 +35,12 @@ public class TodoLine {
 	public void setId(int id) {
 		this.id = id;
 	}
-//	public int getUserId() {
-//		return userId;
-//	}
-//	public void setUserId(int userId) {
-//		this.userId = userId;
-//	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public String getDate() {
 		return date;
 	}

@@ -19,6 +19,10 @@ $(function() {
             var dateFormat = "d.m.yy";
             $('#weekpicker').val($.datepicker.formatDate( dateFormat, startDate, inst.settings )
                  + '-' + $.datepicker.formatDate( dateFormat, endDate, inst.settings ));
+            var res = $.datepicker.formatDate( dateFormat, startDate, inst.settings ) + '-' + $.datepicker.formatDate( dateFormat, endDate, inst.settings );
+            console.log(res);
+            $('#weekpickerForm').attr({'action' : '/todo/showSelectedWeek/'+ res});
+            
             selectCurrentWeek();
         },
         beforeShow: function() {

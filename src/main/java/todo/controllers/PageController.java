@@ -6,8 +6,17 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,26 +25,40 @@ import org.springframework.web.servlet.ModelAndView;
 
 import todo.models.Day;
 import todo.models.TodoLine;
+import todo.models.User;
 import todo.models.dao.TodoLineDAO;
+import todo.models.dao.UserDAO;
 
 @Controller
 @RequestMapping("/todo")
 public class PageController {
+
+	@Autowired
+	HttpSession session;
 	
 	@Autowired
 	TodoLineDAO todoLineDao;
 	
+	@Autowired
+	UserDAO userDao;
+
 	@RequestMapping(value = "")
 	public ModelAndView index(){
 		
 		ModelAndView mv = new ModelAndView("index");
 		
+		User u = (User) session.getAttribute("user");
+		System.out.println(u);
+		if(SecurityContextHolder.getContext().getAuthentication()==null) {
+			mv.setViewName("login");
+			return mv;
+		}
 		String currentWeek[] = getCurrentWeek();
-
+		
 		List<Day> week = new ArrayList<Day>();
 		List<TodoLine> todos;
 		for(String date : currentWeek){
-			todos = todoLineDao.findByDate(date);
+			todos = todoLineDao.findByDateAndUserId(date, u.getId());
 			week.add(new Day(date, todos));
 		}
 		mv.addObject("week", week);
@@ -44,23 +67,29 @@ public class PageController {
 		
 	}
 	
-	@RequestMapping(value = "/showSelectedWeek")
-	public String redirect(@RequestParam(name="newsdate") String weekRange){
-		return "redirect:/todo/showSelectedWeek/"+weekRange;
-		
-	}
+//	@RequestMapping(value = "/showSelectedWeek")
+//	public String redirect(@RequestParam(name="newsdate") String weekRange){
+//		User u = (User) session.getAttribute("user");
+//		System.out.println(u);
+//		if(SecurityContextHolder.getContext().getAuthentication()==null) {
+//			return "redirect:/todo/login";
+//		}
+//		
+//		return "redirect:/todo/showSelectedWeek/"+weekRange;
+//		
+//	}
 	
 	@RequestMapping(value = "/showSelectedWeek/{week}")
 	public ModelAndView showSelectedWeek2(@PathVariable("week") String weekRange){
 		
 		ModelAndView mv = new ModelAndView("index");
-		
+		User u = (User) session.getAttribute("user");
 		String selectedWeek[] = formatWeek(weekRange);
 		
 		List<Day> week = new ArrayList<Day>();
 		List<TodoLine> todos;
 		for(String date : selectedWeek){
-			todos = todoLineDao.findByDate(date);
+			todos = todoLineDao.findByDateAndUserId(date, u.getId());
 			week.add(new Day(date, todos));
 		}
 		
@@ -68,10 +97,11 @@ public class PageController {
 		
 		return mv;
 	}
-	
-	
+		
 	@RequestMapping(value = "/addNote")
 	public String addNote(@ModelAttribute TodoLine todoLine, @RequestParam(name="link") String link){		
+		User u = (User) session.getAttribute("user");
+		todoLine.setUserId(u.getId());
 		todoLineDao.save(todoLine);
 	    return "redirect:"+link;
 	}
@@ -96,11 +126,57 @@ public class PageController {
 	    return "redirect:"+link;
 	}
 	
+	@RequestMapping(value = "/login")
+	public ModelAndView login(@RequestParam(name="error", required = false) String error, @RequestParam(name="logout", required = false) String logout) {
+		
+		ModelAndView mv = new ModelAndView("login");
+		
+		if(error!=null) {
+			mv.addObject("message", "Invalid Username and Password!");
+		}
+		if(logout!=null) {
+			mv.addObject("logout", "User has successfully logout!");
+		}
+		
+
+		return mv;
+
+	}
+	@RequestMapping(value = "/register")
+	public String registration(){
+		return "registration";
+	}
+	@RequestMapping(value = "/registerUser")
+	public String registerUser(@Valid @ModelAttribute User user, BindingResult results){
+		userDao.save(user);
+		return "redirect:/todo/login";
+	}
+	@RequestMapping(value = "/perform-logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		
+		// first we are going to fetch the authentication
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(auth!=null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+				
+		return "redirect:/todo/login?logout";
+	}
+	
+	@RequestMapping(value = "/403")
+	public String accessDenied() {
+		return "403";
+	}
+	
 	@ModelAttribute("todoline")
 	public TodoLine getCategory(){
 		return new TodoLine();
 	}
-	
+	@ModelAttribute("user")
+	public User getUser(){
+		return new User();
+	}
 	
 	public String[] getCurrentWeek() {
 		Calendar now = Calendar.getInstance();

@@ -11,7 +11,7 @@
    http://www.springframework.org/schema/mvc/spring-mvc.xsd
    ">
    
-   <context:component-scan base-package="todo"/>
+   <context:component-scan base-package="todo.*"/>
    
    
    <!-- Loading static resources -->

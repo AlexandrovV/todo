@@ -38,6 +38,37 @@ $(function() {
 			}
 		});
 	}
+	
+
+	var $registerForm = $('#registerForm');
+	if($registerForm.length) {
+		$registerForm.validate({
+			rules : {
+				login : {
+					required: true
+				},
+				password : {
+					required: true
+				}
+			},
+			messages : {
+				login : {
+					required: 'You cant leave this line blank',
+					minlength: 1
+				},
+				password : {
+					required: 'You cant leave this line blank'
+				}
+			},
+			errorElement: 'em',
+			errorPlacement : function(error, element) {
+				// add the class of help-block
+				error.addClass('help-block');
+				// add the error element after the input element
+				error.insertAfter(element);
+			}
+		});
+	}
 
 	$('#myModal').on('hidden.bs.modal', function () {
 		$('#myModal').modal('hide');

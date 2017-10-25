@@ -36,20 +36,36 @@
 <body>
 	<div class="wrapper">
     	<div class="container">
+	    		<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="javascript:void(0)" class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">
+								${globalUser.login}
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="/todo/perform-logout">Logout</a>
+								</li>
+							</ul>
+						</li>
+				</ul>
     		<div class="row">
     			<div class="col-md-offset-4 col-md-4">
-    				<h1 class="text-center">TODO LIST</h1>
+    				<h1 class="text-center">${admin} TODO LIST</h1>
+    				<h2 class="text-center">Hello,  ${globalUser.login}</h2>
     			</div>
     		</div>
     		<div class="row">
     			<div class="col-md-offset-3 col-md-6">
-    				<form action="/todo/showSelectedWeek" method="POST" class="form-inline text-center">
+    				<form id="weekpickerForm" action="/todo/showSelectedWeek/" method="POST" class="form-inline text-center">
 					  <div class="form-group">
 					    <label for="weekpicker">Choose week:</label>
 					    <input type="text" class="form-control" id="weekpicker" required="required" name="newsdate">
 					    <input type="hidden" name="fullWeek" id="fullWeek">
 					  </div>
 					  <button type="submit" class="btn btn-info">Show week</button>
+					  <input type="hidden" name="${_csrf.parameterName}"
+															value="${_csrf.token}" />
 					</form>
     			</div>
     		</div>
